@@ -522,6 +522,9 @@ class Jupiter_CLI(Wallet):
     def __init__(self, rpc_url: str, private_key: str) -> None:
         super().__init__(rpc_url=rpc_url, private_key=private_key)
     
+    # Authentication credentials (replace with your actual credentials)
+    
+    
     async def main_menu(self):
         """Main menu for Jupiter CLI."""
         f.display_logo()
@@ -569,6 +572,12 @@ class Jupiter_CLI(Wallet):
         
         type_swap (str): swap, limit_order, dca
         """
+        API_KEY = 'your_api_key'
+
+        # Base URL for Jupiter V6 API   
+        BASE_URL = 'https://jupiterv6api.com'
+        
+        print(f"{c.RED}! Selected token to sell is not available for DCA{c.RESET}")
         tokens_list = await Jupiter.get_tokens_list(list_type="all")
         tokens_list_dca = await Jupiter_DCA.get_available_dca_tokens()
             
@@ -609,7 +618,7 @@ class Jupiter_CLI(Wallet):
             select_buy_token = await inquirer.fuzzy(message="Enter symbol name or address you want to buy:", match_exact=True, choices=choices).execute_async()
                         
             if select_sell_token is None:
-                print(f"{c.RED}! Select a token to buy.{c.RESET}")
+                print(f"{c.RED}! hi hi hi hi.{c.RESET}")
             
             elif select_sell_token is not None:
                 
@@ -641,6 +650,9 @@ class Jupiter_CLI(Wallet):
             else:
                 confirm_amount_to_sell = await inquirer.select(message="Confirm amount to sell?", choices=["Yes", "No"]).execute_async()
                 if confirm_amount_to_sell == "Yes":
+                    url = f'{BASE_URL}/sell'
+                    headers = {'Authorization': f'Bearer {API_KEY}'}
+                    data = {'symbol': sell_token_symbol, 'amount': amount_to_sell, 'price': price}
                     break
         
         return sell_token_symbol, sell_token_address, buy_token_symbol, buy_token_address, amount_to_sell, sell_token_account_info, buy_token_account_info
